@@ -20,7 +20,7 @@ class BookRepository extends ServiceEntityRepository
     public function save(Book $book): void
     {
         $this->getEntityManager()->persist($book);
-        $this->getEntityManager()->flush($book);
+        $this->getEntityManager()->flush();
     }
 
     public function search(FilterParams $filterParams): array

@@ -33,6 +33,15 @@ services:
     networks:
       - symfony
 
+  crontab:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile-cron
+    volumes:
+      - ./:/var/www/
+    networks:
+      - symfony
+
 volumes:
   symfony_db:
 

@@ -1,0 +1,23 @@
+FROM ubuntu:latest
+ARG DEBIAN_FRONTEND=noninteractive
+# Install cron
+RUN apt-get update && apt-get install -y \
+    sudo \
+    cron \
+    build-essential \
+    software-properties-common \
+    zlib1g-dev \
+    libxml2-dev
+
+RUN add-apt-repository ppa:ondrej/php
+RUN apt-get -y update && apt-get install -y \
+    php8.1 \
+    php8.1-curl \
+    php8.1-mysql
+
+COPY ./ /var/www
+COPY ./cron/crontab /etc/cron.d
+RUN chmod 0644 /etc/cron.d/crontab &&\
+    crontab /etc/cron.d/crontab
+RUN touch /var/log/cron.log
+CMD cron && tail -f /var/log/cron.log

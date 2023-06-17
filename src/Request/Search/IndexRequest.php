@@ -7,8 +7,8 @@ use App\Component\Request\FilterParams;
 class IndexRequest
 {
     protected static array $allowedFilters = [
-        'price' => 'b.price',
-        'date'  => 'b.date',
+        FilterParams::KEYWORD_EQUAL => ['price' => 'price.amount'],
+        FilterParams::KEYWORD_LIKE => ['date' => 'date'],
     ];
 
     public function __construct(private FilterParams $filterParams)

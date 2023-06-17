@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Component\Request\FilterParams;
 use App\Entity\Book;
+use App\Helper\QueryBuilderHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,5 +19,14 @@ class BookRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($book);
         $this->getEntityManager()->flush($book);
+    }
+
+    public function search(FilterParams $filterParams)
+    {
+        $qb = $this->createQueryBuilder($tableAlias = 'b');
+
+        QueryBuilderHelper::addFilterParamsToQueryBuilder($qb, $tableAlias, $filterParams);
+
+        return $qb->getQuery()->getResult();
     }
 }

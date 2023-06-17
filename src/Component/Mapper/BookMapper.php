@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mapper;
+namespace App\Component\Mapper;
 
 use App\Entity\Book;
 use Money\Currency;

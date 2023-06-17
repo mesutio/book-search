@@ -4,8 +4,10 @@ namespace App\Repository;
 
 use App\Component\Request\FilterParams;
 use App\Entity\Book;
+use App\Entity\BookCategory;
 use App\Helper\QueryBuilderHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class BookRepository extends ServiceEntityRepository
@@ -21,11 +23,16 @@ class BookRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush($book);
     }
 
-    public function search(FilterParams $filterParams)
+    public function search(FilterParams $filterParams): array
     {
-        $qb = $this->createQueryBuilder($tableAlias = 'b');
+        $otherAliases = [
+            $categoryRelationAlias = 'bc',
+        ];
 
-        QueryBuilderHelper::addFilterParamsToQueryBuilder($qb, $tableAlias, $filterParams);
+        $qb = $this->createQueryBuilder($tableAlias = 'b')
+                   ->innerJoin('b.categories', $categoryRelationAlias);
+
+        QueryBuilderHelper::addFilterParamsToQueryBuilder($qb, $tableAlias, $filterParams, $otherAliases);
 
         return $qb->getQuery()->getResult();
     }

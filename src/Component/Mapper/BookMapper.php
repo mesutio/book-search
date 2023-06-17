@@ -3,6 +3,7 @@
 namespace App\Component\Mapper;
 
 use App\Entity\Book;
+use App\Entity\BookCategory;
 use Money\Currency;
 use Money\Money;
 

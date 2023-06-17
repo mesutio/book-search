@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'book')]
+#[ORM\Table(name: 'books')]
 #[ORM\Entity(repositoryClass: 'App\Repository\BookRepository')]
+#[ORM\HasLifecycleCallbacks]
 class Book
 {
     #[ORM\Column(name: 'id')]
@@ -40,6 +43,61 @@ class Book
 
     #[ORM\Column(name: 'status', type: 'string', nullable: false)]
     private string $status;
+
+    #[ORM\ManyToMany(targetEntity: "BookCategory", inversedBy: "books")]
+    #[ORM\JoinTable(name: "book_categories")]
+    #[ORM\JoinColumn(name: "book_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "category_id", referencedColumnName: "id")]
+    private Collection $categories;
+
+    #[ORM\ManyToMany(targetEntity: "BookAuthor", inversedBy: "books")]
+    #[ORM\JoinTable(name: "book_authors")]
+    #[ORM\JoinColumn(name: "book_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "author_id", referencedColumnName: "id")]
+    private Collection $authors;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->authors = new ArrayCollection();
+    }
+
+    public function addAuthor(BookAuthor $bookAuthor)
+    {
+        $this->authors->add($bookAuthor);
+    }
+
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
+    }
+
+    public function removeAuthors(): void
+    {
+        foreach ($this->authors as $author) {
+            $this->authors->removeElement($author);
+        }
+    }
+
+    public function addCategory(BookCategory $category)
+    {
+        $this->categories->add($category);
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function removeCategories(): void
+    {
+        foreach ($this->categories as $category) {
+            $this->categories->removeElement($category);
+        }
+    }
 
     public function getId(): int
     {
@@ -134,5 +192,11 @@ class Book
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->updatedAt = new \DateTime();
     }
 }

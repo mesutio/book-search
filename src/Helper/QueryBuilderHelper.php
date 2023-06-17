@@ -21,14 +21,15 @@ class QueryBuilderHelper
         QueryBuilder $queryBuilder,
         string $tableAlias,
         FilterParams $filterParams,
-        bool $orCondition = false
+        array $otherAliases = [],
+        bool $orCondition = false,
     ): QueryBuilder
     {
         foreach ($filterParams->getData() as $field => $filter) {
             $i = 0;
             foreach ($filter as $operator => $value) {
-
                 $i++;
+                $relation = false;
                 if (FilterParams::KEYWORD_LIKE === $operator) {
                     $value = trim(StringHelper::cleanupSpecialChars((string) ($value ?? '')));
                     if (empty($value) || !is_string($value)) {
@@ -44,16 +45,23 @@ class QueryBuilderHelper
                     $whereFmt = '%s.%s %s (:%s)';
                 }
 
+                $fieldSeperatedByDots = explode('.', $field);
+                if (in_array($fieldSeperatedByDots[0], $otherAliases)) {
+                    $whereFmt = '%s %s (:%s)';
+                    $relation = true;
+                }
+
                 $uniqueParamName = sprintf('%s_%s_%d', $tableAlias, $field, $i);
                 if (str_contains($uniqueParamName, '.')) {
                     $uniqueParamName = str_replace('.', '_', $uniqueParamName);
                 }
 
+                $whereClosure = $relation ? sprintf($whereFmt, $field, $operator, $uniqueParamName) : sprintf($whereFmt, $tableAlias, $field, $operator, $uniqueParamName);
                 if ($orCondition) {
-                    $queryBuilder->orWhere(sprintf($whereFmt, $tableAlias, $field, $operator, $uniqueParamName))
+                    $queryBuilder->orWhere($whereClosure)
                         ->setParameter($uniqueParamName, $value);
                 } else {
-                    $queryBuilder->andWhere(sprintf($whereFmt, $tableAlias, $field, $operator, $uniqueParamName))
+                    $queryBuilder->andWhere($whereClosure)
                         ->setParameter($uniqueParamName, $value);
                 }
             }

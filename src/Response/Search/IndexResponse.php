@@ -18,13 +18,25 @@ class IndexResponse
         THUMBNAIL_URL = 'thumbnail_url',
         SHORT_DESCRIPTION = 'short_description',
         LONG_DESCRIPTION = 'long_description',
-        STATUS = 'status';
+        STATUS = 'status',
+        CATEGORIES = 'categories',
+        AUTHORS = 'authors';
 
-    public static function create(array $data): array
+    public static function create(array $data = []): array
     {
         $collection = new ArrayCollection();
         /** @var Book $book */
         foreach ($data as $book) {
+            $categories = [];
+            foreach ($book->getCategories() as $category) {
+                $categories[] = $category->getCategoryName();
+            }
+
+            $authors = [];
+            foreach ($book->getAuthors() as $author) {
+                $authors[] = $author->getAuthorName();
+            }
+
             $collection->add([
                 self::ID => $book->getId(),
                 self::TITLE => $book->getTitle(),
@@ -37,6 +49,8 @@ class IndexResponse
                 self::SHORT_DESCRIPTION => $book->getShortDescription(),
                 self::LONG_DESCRIPTION => $book->getLongDescription(),
                 self::STATUS => $book->getStatus(),
+                self::CATEGORIES => $categories,
+                self::AUTHORS => $authors,
             ]);
         }
 

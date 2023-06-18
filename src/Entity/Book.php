@@ -67,7 +67,7 @@ class Book
         $this->authors = new ArrayCollection();
     }
 
-    public function addAuthor(BookAuthor $bookAuthor)
+    public function addAuthor(BookAuthor $bookAuthor): void
     {
         $this->authors->add($bookAuthor);
     }
@@ -84,7 +84,7 @@ class Book
         }
     }
 
-    public function addCategory(BookCategory $category)
+    public function addCategory(BookCategory $category): void
     {
         $this->categories->add($category);
     }

@@ -37,3 +37,7 @@ swagger-api-doc:
 
 code-fixer-fix:
 	docker-compose run --rm php sh -c 'vendor/bin/php-cs-fixer fix src'
+
+phpstan-check:
+	docker-compose run --rm php sh -c '\
+	./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G'

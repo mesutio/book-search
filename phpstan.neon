@@ -1,0 +1,13 @@
+parameters:
+   level: 7
+   paths:
+       - src
+   ignoreErrors:
+        -
+          message: '#Property [a-zA-Z0-9\\_]+::\$id is never written, only read.#'
+          path: src/Entity/*
+        -
+          message: '#Property [a-zA-Z0-9\\_]+::\$updatedAt is never read, only written.#'
+          path: src/Entity/*
+   checkGenericClassInNonGenericObjectType: false
+   checkMissingIterableValueType: false

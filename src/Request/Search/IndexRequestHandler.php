@@ -11,7 +11,7 @@ class IndexRequestHandler
     {
     }
 
-    public function __invoke(IndexRequest $indexRequest)
+    public function __invoke(IndexRequest $indexRequest): array
     {
         $response = $this->bookRepository->search($indexRequest->getFilterParams());
 

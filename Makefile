@@ -6,7 +6,9 @@ build-environment:
 	docker-compose run --rm php sh -c '\
         php -d memory_limit=256M \
         & composer install \
-	    && bin/console doctrine:database:create --if-not-exists'
+	    && bin/console doctrine:database:create --if-not-exists \
+	    && bin/console doctrine:migrations:migrate -n \
+	    && bin/console consumer:sync-books'
 	docker-compose rm db
 	make swagger-api-doc
 	cp .git_hooks/pre-commit .git/hooks/pre-commit

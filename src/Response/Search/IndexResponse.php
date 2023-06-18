@@ -7,20 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class IndexResponse
 {
-    private const
-        ID = 'id',
-        TITLE = 'title',
-        ISBN = 'isbn',
-        PAGE_COUNT = 'page_count',
-        DATE = 'date',
-        PRICE_AMOUNT = 'price_amount',
-        CURRENCY = 'currency',
-        THUMBNAIL_URL = 'thumbnail_url',
-        SHORT_DESCRIPTION = 'short_description',
-        LONG_DESCRIPTION = 'long_description',
-        STATUS = 'status',
-        CATEGORIES = 'categories',
-        AUTHORS = 'authors';
+    private const ID = 'id';
+    private const TITLE = 'title';
+    private const ISBN = 'isbn';
+    private const PAGE_COUNT = 'page_count';
+    private const DATE = 'date';
+    private const PRICE_AMOUNT = 'price_amount';
+    private const CURRENCY = 'currency';
+    private const THUMBNAIL_URL = 'thumbnail_url';
+    private const SHORT_DESCRIPTION = 'short_description';
+    private const LONG_DESCRIPTION = 'long_description';
+    private const STATUS = 'status';
+    private const CATEGORIES = 'categories';
+    private const AUTHORS = 'authors';
 
     public static function create(array $data = []): array
     {

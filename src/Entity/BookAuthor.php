@@ -30,5 +30,4 @@ class BookAuthor implements BookRelationInterface
     {
         return $this->id;
     }
-
 }

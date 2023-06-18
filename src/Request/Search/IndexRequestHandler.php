@@ -9,7 +9,6 @@ class IndexRequestHandler
 {
     public function __construct(private BookRepository $bookRepository)
     {
-
     }
 
     public function __invoke(IndexRequest $indexRequest)

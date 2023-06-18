@@ -24,9 +24,7 @@ class BookClient
         private ClientInterface $client,
         private LoggerInterface $logger,
         private string $baseUri,
-    )
-    {
-
+    ) {
     }
 
     public function request(string $method, string $path, array $options = [], ?array $payload = []): ResponseInterface

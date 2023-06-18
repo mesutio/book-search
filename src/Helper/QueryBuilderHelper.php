@@ -2,19 +2,19 @@
 
 namespace App\Helper;
 
-use Doctrine\ORM\QueryBuilder;
 use App\Component\Request\FilterParams;
+use Doctrine\ORM\QueryBuilder;
 
 class QueryBuilderHelper
 {
     protected const KEYWORDS_MAPPING = [
-        FilterParams::KEYWORD_LIKE                        => 'LIKE',
-        FilterParams::KEYWORD_EQUAL                       => '=',
-        FilterParams::KEYWORD_LESS_THAN_EQUAL             => '<=',
-        FilterParams::KEYWORD_GREATER_THAN_EQUAL          => '>=',
-        FilterParams::KEYWORD_LESS_THAN                   => '<',
-        FilterParams::KEYWORD_GREATER_THAN                => '>',
-        FilterParams::KEYWORD_IN                          => 'in',
+        FilterParams::KEYWORD_LIKE => 'LIKE',
+        FilterParams::KEYWORD_EQUAL => '=',
+        FilterParams::KEYWORD_LESS_THAN_EQUAL => '<=',
+        FilterParams::KEYWORD_GREATER_THAN_EQUAL => '>=',
+        FilterParams::KEYWORD_LESS_THAN => '<',
+        FilterParams::KEYWORD_GREATER_THAN => '>',
+        FilterParams::KEYWORD_IN => 'in',
     ];
 
     public static function addFilterParamsToQueryBuilder(
@@ -23,12 +23,11 @@ class QueryBuilderHelper
         FilterParams $filterParams,
         array $otherAliases = [],
         bool $orCondition = false,
-    ): QueryBuilder
-    {
+    ): QueryBuilder {
         foreach ($filterParams->getData() as $field => $filter) {
             $i = 0;
             foreach ($filter as $operator => $value) {
-                $i++;
+                ++$i;
                 $relation = false;
                 if (FilterParams::KEYWORD_LIKE === $operator) {
                     $value = trim(StringHelper::cleanupSpecialChars((string) ($value ?? '')));
@@ -37,7 +36,7 @@ class QueryBuilderHelper
                     }
 
                     $value = StringHelper::truncate($value, 50);
-                    $value = '%' . $value . '%';
+                    $value = '%'.$value.'%';
                 }
                 $operator = static::KEYWORDS_MAPPING[$operator];
                 $whereFmt = '%s.%s %s :%s';

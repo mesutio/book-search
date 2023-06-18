@@ -2,8 +2,8 @@
 
 namespace App\Controller\Search;
 
-use App\Request\Search\IndexRequestHandler;
 use App\Request\Search\IndexRequest;
+use App\Request\Search\IndexRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

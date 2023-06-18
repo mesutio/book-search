@@ -19,15 +19,13 @@ class BookSyncService
     private const PATH_URI = '/d7f02fdc-5591-4080-a163-95a08ce6895e';
 
     public function __construct(
-        private BookClient      $bookClient,
-        private BookRepository  $bookRepository,
+        private BookClient $bookClient,
+        private BookRepository $bookRepository,
         private BookCategoryRepository $bookCategoryRepository,
         private BookAuthorRepository $bookAuthorRepository,
         private EntityManagerInterface $entityManager,
         private LoggerInterface $logger,
-    )
-    {
-
+    ) {
     }
 
     public function sync(): void
@@ -35,7 +33,7 @@ class BookSyncService
         try {
             $response = $this->bookClient->get(self::PATH_URI);
         } catch (ClientException $exception) {
-            $this->logger->error(sprintf(get_class($this) . ' error. Message : %s --- trace: %s', $exception->getMessage(), $exception->getTraceAsString()));
+            $this->logger->error(sprintf(get_class($this).' error. Message : %s --- trace: %s', $exception->getMessage(), $exception->getTraceAsString()));
 
             throw $exception;
         }
@@ -89,12 +87,12 @@ class BookSyncService
 
         /** @var Book $bookEntity */
         foreach ($existsBooks as $bookEntity) {
-            if (isset($book['isbn']) && $book['isbn'] !== null && $bookEntity->getIsbn() === $book['isbn']) {
+            if (isset($book['isbn']) && null !== $book['isbn'] && $bookEntity->getIsbn() === $book['isbn']) {
                 $dbBook = $bookEntity;
                 break;
             }
 
-            if (isset($book['title']) && $book['title'] != null && $bookEntity->getTitle() === $book['title']) {
+            if (isset($book['title']) && null != $book['title'] && $bookEntity->getTitle() === $book['title']) {
                 $dbBook = $bookEntity;
                 break;
             }

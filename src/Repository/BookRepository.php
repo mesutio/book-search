@@ -10,9 +10,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class BookRepository extends ServiceEntityRepository
 {
-    private const
-        SEARCH_CACHE_EXPIRE = 3600,
-        SEARCH_CACHE_ID = 'book_search';
+    private const SEARCH_CACHE_EXPIRE = 3600;
+    private const SEARCH_CACHE_ID = 'book_search';
 
     public function __construct(ManagerRegistry $registry)
     {

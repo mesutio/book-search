@@ -17,8 +17,7 @@ class BookApiSyncCommand extends Command
     public function __construct(
         private BookSyncService $bookSyncService,
         private LoggerInterface $logger,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

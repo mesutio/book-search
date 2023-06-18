@@ -9,6 +9,7 @@ build-environment:
 	    && bin/console doctrine:database:create --if-not-exists'
 	docker-compose rm db
 	make swagger-api-doc
+	cp .git_hooks/pre-commit .git/hooks/pre-commit
 
 up-environment:
 	docker-compose up -d
@@ -31,3 +32,6 @@ tests-unit:
 
 swagger-api-doc:
 	docker-compose run --rm php sh -c "rm -rf public/swagger && mkdir public/swagger && cp -r vendor/swagger-api/swagger-ui/dist apidoc public/swagger/"
+
+code-fixer-fix:
+	docker-compose run --rm php sh -c 'vendor/bin/php-cs-fixer fix src'

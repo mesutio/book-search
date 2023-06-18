@@ -8,8 +8,8 @@ class IndexRequest
 {
     protected static array $allowedFilters = [
         FilterParams::KEYWORD_EQUAL => [
-            'price'     => 'price.amount',
-            'category'  => 'bc.categoryName'
+            'price' => 'price.amount',
+            'category' => 'bc.categoryName',
         ],
         FilterParams::KEYWORD_LIKE => ['date' => 'date'],
     ];

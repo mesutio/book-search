@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: 'Book Search API'
+
+servers:
+  - url: http://127.0.0.1:8001/
+    description: Local environment
+
+paths:
+  /book/search:
+    get:
+      summary: Filter among books
+      description: Filter the books based on price, category and date
+      parameters:
+        - name: price
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 40
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+          example: 'Internet'
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+          example: '2009-04-01'
+      responses:
+        200:
+          description: Return when success
+          content:
+            application/json:
+              schema:
+                $ref: responses/books_search.json

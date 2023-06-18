@@ -8,6 +8,7 @@ build-environment:
         & composer install \
 	    && bin/console doctrine:database:create --if-not-exists'
 	docker-compose rm db
+	make swagger-api-doc
 
 up-environment:
 	docker-compose up -d
@@ -17,3 +18,6 @@ tests-unit:
 	docker-compose run --rm php sh -c '\
 		php -d memory_limit=256M \
 		./vendor/bin/phpunit -c phpunit.unit.xml --testsuite unit ${TEST_GROUP} '
+
+swagger-api-doc:
+	docker-compose run --rm php sh -c "rm -rf public/swagger && mkdir public/swagger && cp -r vendor/swagger-api/swagger-ui/dist apidoc public/swagger/"

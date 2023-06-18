@@ -11,3 +11,9 @@ build-environment:
 
 up-environment:
 	docker-compose up -d
+
+tests-unit:
+	@echo "Running unit tests.."
+	docker-compose run --rm php sh -c '\
+		php -d memory_limit=256M \
+		./vendor/bin/phpunit -c phpunit.unit.xml --testsuite unit ${TEST_GROUP} '

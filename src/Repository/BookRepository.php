@@ -4,10 +4,8 @@ namespace App\Repository;
 
 use App\Component\Request\FilterParams;
 use App\Entity\Book;
-use App\Entity\BookCategory;
 use App\Helper\QueryBuilderHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class BookRepository extends ServiceEntityRepository

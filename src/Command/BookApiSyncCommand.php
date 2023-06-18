@@ -34,10 +34,10 @@ class BookApiSyncCommand extends Command
             $this->bookSyncService->sync();
         } catch (ClientException $e) {
             $io->error('Books are not populated due to Book API error.');
-            $this->logger->error(sprintf('consumer:sync-books command error. Message : % --- trace: %s', $e->getMessage(), $e->getTraceAsString()));
+            $this->logger->error(sprintf('consumer:sync-books command error. Message : %s --- trace: %s', $e->getMessage(), $e->getTraceAsString()));
         } catch (\RuntimeException $e) {
             $io->error('Books are not populated due to some reason.');
-            $this->logger->error(sprintf('consumer:sync-books command error. Message : % --- trace: %s', $e->getMessage(), $e->getTraceAsString()));
+            $this->logger->error(sprintf('consumer:sync-books command error. Message : %s --- trace: %s', $e->getMessage(), $e->getTraceAsString()));
         }
 
         return 0;

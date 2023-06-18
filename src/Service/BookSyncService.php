@@ -33,7 +33,7 @@ class BookSyncService
         try {
             $response = $this->bookClient->get(self::PATH_URI);
         } catch (ClientException $exception) {
-            $this->logger->error(sprintf(get_class($this) . ' error. Message : % --- trace: %s', $exception->getMessage(), $exception->getTraceAsString()));
+            $this->logger->error(sprintf(get_class($this) . ' error. Message : %s --- trace: %s', $exception->getMessage(), $exception->getTraceAsString()));
 
             throw $exception;
         }
@@ -62,7 +62,6 @@ class BookSyncService
                 }
                 $bookEntity->addCategory($dbCategory);
             }
-            $this->bookRepository->save($bookEntity);
 
             $bookEntity->removeAuthors();
             foreach ($book['authors'] as $author) {
@@ -74,6 +73,7 @@ class BookSyncService
                 }
                 $bookEntity->addAuthor($dbAuthor);
             }
+
             $this->bookRepository->save($bookEntity);
         }
 

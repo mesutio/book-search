@@ -4,21 +4,21 @@ namespace App\Tests\unit\Request\Search;
 
 use App\Component\Request\FilterParams;
 use App\Repository\BookRepository;
-use App\Request\Search\IndexHandler;
+use App\Request\Search\IndexRequestHandler;
 use App\Request\Search\IndexRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class IndexHandlerTest extends TestCase
+class IndexRequestHandlerTest extends TestCase
 {
     private BookRepository|MockObject $bookRepository;
-    private IndexHandler $handler;
+    private IndexRequestHandler $handler;
 
     public function setUp(): void
     {
         $this->bookRepository = $this->createMock(BookRepository::class);
 
-        $this->handler = new IndexHandler($this->bookRepository);
+        $this->handler = new IndexRequestHandler($this->bookRepository);
     }
 
     public function testSuccessInvoke()

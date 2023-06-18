@@ -42,6 +42,13 @@ services:
     networks:
       - symfony
 
+  redis:
+    image: redis
+    ports:
+      - "6379"
+    networks:
+      - symfony
+
 volumes:
   symfony_db:
 

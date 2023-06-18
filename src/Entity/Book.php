@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'books')]
 #[ORM\Entity(repositoryClass: 'App\Repository\BookRepository')]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
 class Book
 {
     #[ORM\Column(name: 'id')]
@@ -48,6 +49,7 @@ class Book
     #[ORM\JoinTable(name: "book_categories")]
     #[ORM\JoinColumn(name: "book_id", referencedColumnName: "id")]
     #[ORM\InverseJoinColumn(name: "category_id", referencedColumnName: "id")]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     private Collection $categories;
 
     #[ORM\ManyToMany(targetEntity: "BookAuthor", inversedBy: "books")]

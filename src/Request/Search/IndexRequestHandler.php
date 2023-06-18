@@ -5,7 +5,7 @@ namespace App\Request\Search;
 use App\Repository\BookRepository;
 use App\Response\Search\IndexResponse;
 
-class IndexHandler
+class IndexRequestHandler
 {
     public function __construct(private BookRepository $bookRepository)
     {

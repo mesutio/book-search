@@ -11,9 +11,12 @@ use App\Repository\BookCategoryRepository;
 use App\Repository\BookRepository;
 use App\Service\BookClient;
 use App\Service\BookSyncService;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
@@ -24,6 +27,7 @@ class BookSyncServiceTest extends TestCase
     private BookRepository|MockObject  $bookRepository;
     private BookCategoryRepository|MockObject $bookCategoryRepository;
     private BookAuthorRepository|MockObject $bookAuthorRepository;
+    private EntityManagerInterface|MockObject $entityManager;
     private LoggerInterface|MockObject $logger;
 
     private BookSyncService $service;
@@ -34,6 +38,7 @@ class BookSyncServiceTest extends TestCase
         $this->bookRepository = $this->createMock(BookRepository::class);
         $this->bookCategoryRepository = $this->createMock(BookCategoryRepository::class);
         $this->bookAuthorRepository = $this->createMock(BookAuthorRepository::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->service = new BookSyncService(
@@ -41,6 +46,7 @@ class BookSyncServiceTest extends TestCase
             $this->bookRepository,
             $this->bookCategoryRepository,
             $this->bookAuthorRepository,
+            $this->entityManager,
             $this->logger,
         );
     }
@@ -84,6 +90,10 @@ class BookSyncServiceTest extends TestCase
         $bookAuthor->setAuthorName($faker->name());
         $this->bookAuthorRepository->expects(static::once())->method('findAll')->willReturn([$bookAuthor]);
         $this->bookAuthorRepository->expects(static::exactly(12))->method('save');
+
+        $this->entityManager->expects(static::once())->method('getConfiguration')->willReturn($emConfig = $this->createMock(Configuration::class));
+        $emConfig->expects(static::once())->method('getResultCache')->willReturn($pool = $this->createMock(CacheItemPoolInterface::class));
+        $pool->expects(static::once())->method('clear');
 
         $this->service->sync();
     }

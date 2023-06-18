@@ -21,6 +21,7 @@ class BookCategory implements BookRelationInterface
     #[ORM\JoinTable(name: "book_categories")]
     #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id")]
     #[ORM\InverseJoinColumn(name: "book_id", referencedColumnName: "id")]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     private Collection $books;
 
     public function setCategoryName(string $categoryName): void

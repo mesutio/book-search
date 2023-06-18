@@ -11,6 +11,7 @@ use App\Exception\ClientException;
 use App\Repository\BookAuthorRepository;
 use App\Repository\BookCategoryRepository;
 use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class BookSyncService
@@ -22,6 +23,7 @@ class BookSyncService
         private BookRepository  $bookRepository,
         private BookCategoryRepository $bookCategoryRepository,
         private BookAuthorRepository $bookAuthorRepository,
+        private EntityManagerInterface $entityManager,
         private LoggerInterface $logger,
     )
     {
@@ -77,6 +79,8 @@ class BookSyncService
             $this->bookRepository->save($bookEntity);
         }
 
+        // Clean the cache
+        $this->entityManager->getConfiguration()->getResultCache()->clear();
     }
 
     private function searchInExistsBook(array $existsBooks, array $book): ?Book

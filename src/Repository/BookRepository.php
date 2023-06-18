@@ -10,6 +10,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class BookRepository extends ServiceEntityRepository
 {
+    private const
+        SEARCH_CACHE_EXPIRE = 3600,
+        SEARCH_CACHE_ID = 'book_search';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
@@ -32,6 +36,11 @@ class BookRepository extends ServiceEntityRepository
 
         QueryBuilderHelper::addFilterParamsToQueryBuilder($qb, $tableAlias, $filterParams, $otherAliases);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->useQueryCache(true)->enableResultCache(self::SEARCH_CACHE_EXPIRE, $this->makeSearchCacheKey($filterParams))->getResult();
+    }
+
+    private function makeSearchCacheKey(FilterParams $filterParams): string
+    {
+        return sprintf('%s_%s', self::SEARCH_CACHE_ID, md5(json_encode($filterParams->getData())));
     }
 }

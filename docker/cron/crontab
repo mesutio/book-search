@@ -1,1 +1,1 @@
-* * * * * sh /var/www/docker/cron/scripts/sync_book_api.sh >> /var/log/cron.log
+5 * * * * sh /var/www/docker/cron/scripts/sync_book_api.sh >> /var/log/cron.log

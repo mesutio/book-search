@@ -13,6 +13,16 @@ build-environment:
 up-environment:
 	docker-compose up -d
 
+stop-environment:
+	docker-compose stop
+
+remove-environment: stop-environment
+	@echo "Removing the app containers"
+	docker-compose up --detach db
+	docker-compose run --rm php sh -c 'bin/console doctrine:database:drop --force'
+	docker-compose kill
+	docker-compose rm -v -f
+
 tests-unit:
 	@echo "Running unit tests.."
 	docker-compose run --rm php sh -c '\

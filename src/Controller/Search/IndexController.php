@@ -4,7 +4,6 @@ namespace App\Controller\Search;
 
 use App\Request\Search\IndexRequest;
 use App\Request\Search\IndexRequestHandler;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +14,7 @@ class IndexController extends AbstractController
 {
     #[Route('/search', name: 'book_index', methods: ['GET'])]
     #[ParamConverter('searchIndex', class: 'App\Request\Search\IndexRequest')]
-    public function index(IndexRequest $request, IndexRequestHandler $handler, EntityManagerInterface $entityManager): JsonResponse
+    public function index(IndexRequest $request, IndexRequestHandler $handler): JsonResponse
     {
         return $this->json($handler($request));
     }

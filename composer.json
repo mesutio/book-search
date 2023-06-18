@@ -1,4 +1,6 @@
 {
+    "name": "mesut/booksearch",
+    "description": "Book Search API is providing search ability among books in the system. This project written via Symfony 6.3.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",

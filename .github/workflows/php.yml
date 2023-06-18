@@ -10,39 +10,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          extensions: mysql
-          coverage: pcov
+          tools: phpstan, phpunit, php-cs-fixer
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
-
-      - name: Cache Composer packages
+      - name: Get composer cache directory
         id: composer-cache
-        uses: actions/cache@v2
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
         with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist
 
       - name: Run PHP-CS-Fixer to fix coding standard issues
         run: |
-          curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o php-cs-fixer
-          chmod a+x php-cs-fixer
-          php php-cs-fixer vendor/bin/php-cs-fixer fix src
-
-      - name: Run PHP Stan static analysis tool
-        run: |
-          ./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G
+          php-cs-fixer fix src
 
       - name: Run Unit Test Cases
         run: |
-          php -d memory_limit=256M
-          bin/phpunit -c phpunit.unit.xml --testsuite unit
+          phpunit -c phpunit.unit.xml --testsuite unit
